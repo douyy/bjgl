@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<style>
+		@font-face{
+		    font-family: myFirstFont;
+		    src:url(../css/youyuan.TTF);
+		}
+		*{
+			margin:0;
+			padding:0;
+		}
+		body{
+			font-family: myFirstFont;
+		}
+		.hezi{
+			width: 960px;
+			margin:0 auto;
+		}
+		.box{
+			width: 960px;
+			height: 800px;
+			position: relative;
+			border-bottom:1px solid;
+			margin-bottom: 10px;
+		}
+		/*上部*/
+		.box .tip{
+			position: absolute;
+			width: 227px;
+			cursor: move;
+		}
+		.box .tip .tip_top{
+			background:url(image/tip1_h.gif) no-repeat left;
+			height: 70px;
+			position: relative;	
+		}
+		.box .tip .tip_top .num{
+			position: absolute;
+			left: 3px;
+			bottom: 5px;
+		}
+		/*中部*/
+		.box .tip .tip_content{
+			width: 200px;
+			padding-left: 12px;
+			padding-right: 15px;
+			font-size: 16px;
+			min-height: 40px;
+			max-height: 160px;
+			text-align: center;
+			word-wrap: break-word;
+			word-break: break-all;
+			overflow: hidden;
+			background:url(image/tip1_c.gif) repeat-y;
+		}
+		/*下部*/
+		.box .tip .tip_footer{
+			width: 227px;
+			height: 53px;
+			padding-top: 20px;
+			background:url(image/tip1_f.gif) no-repeat left top;
+		}
+		textarea{
+			width: 500px;
+			height: 150px;
+			resize: none;
+			outline: none;
+		}
+		#btn{
+			border:0;
+			background-color: skyblue;
+			width: 70px;
+			height: 30px;
+			border-radius: 20px;
+			color: white;
+			font-size: 16px;
+			outline: none;
+		}
+	</style>
+</head>
+<body>
+	<div class="hezi">
+		<div class="box">
+			
+		</div>
+		<textarea placeholder="请输入留言内容：" id="txt"></textarea><br>
+		<button id="btn">发送</button>
+		<span class="xianshi"></span>
+	</div>
+	
+	<script type="text/template" id="template">
+		<div class="tip">
+			<div class="tip_top">
+				<div class="num">
+					第[<%=index%>]条<%=time%>
+				</div>
+			</div>
+			<div class="tip_content">
+				<span><%=content%></span>
+			</div>
+			<div class="tip_footer"></div>
+		</div>
+	</script>
+
+	<script src="js/jquery-1.12.3.min.js"></script>
+	<script src="js/underscore.js"></script>
+	<script>
+		var templateStr = $('#template').html();
+		var compile = _.template(templateStr);
+		var z = 0;
+
+		get();
+		function get(){
+			$.get('php/liuyan.php',function(data){
+				var obj = eval("("+data+")");
+				// console.log(obj.result.length);
+				$(obj.result).each(function(i){
+					var dictionary = eval("("+obj.result[i]+")");
+					
+					var domstr = compile(dictionary);
+					// console.log(domstr);
+					$('.box').append($(domstr));
+					
+				});
+
+				$('.tip').each(function(){
+					var x = parseInt(Math.random() * 730);
+					var y = parseInt(Math.random() * 500);
+					$(this)[0].style.left = x + 'px';
+					$(this)[0].style.top = y + 'px';
+					$(this).click(function(){
+						z++;
+						this.style.zIndex = z;
+					});
+				});
+			});
+		}
+		
+		$('#btn').click(function(){
+			if ($('#txt').val() == '') {
+				$('.xianshi').html("留言不能为空！");
+				$('.xianshi')[0].style.color = 'red';
+			}else{
+				$.post('php/insert.php',{'content':$('#txt').val()},function(data){
+					if (data == 'ok') {
+						$('.box').children().remove();
+						get();
+						$('.xianshi').html("留言成功");
+						$('.xianshi')[0].style.color = 'pink';
+
+					}else{
+						$('.xianshi')[0].style.color = 'red';
+						$('.xianshi').html("留言失败，请重新留言");
+					}
+				});
+				$('#txt').val('');
+			}
+		});
+		$('#txt').focus(function(){
+			$('.xianshi').html('');
+		});
+	</script>
+</body>
+</html>

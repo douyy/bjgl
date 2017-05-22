@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>本地存储</title>
+</head>
+<body>
+    账号：<input type="text" id="username"><br>
+    密码：<input type="password" id="password"><br>
+    <input type="checkbox" id="save"><label for="save">保存密码</label>
+</body>
+</html>
+
+
+<script>
+    window.onload = function () {
+
+        var username = document.getElementById('username');
+        var password = document.getElementById('password');
+        var save = document.getElementById('save');
+
+        //自动填充  获取
+        if (localStorage.getItem('name')&&localStorage.getItem('pass')){
+            username.value = localStorage.getItem('name');
+            password.value = localStorage.getItem('pass');
+            save.checked = true;
+        }
+        //点击保存，本地保存密码
+        save.onclick = function () {
+            if (save.checked){
+                localStorage.setItem('name',username.value);
+                localStorage.setItem('pass',password.value);
+            }else {
+                localStorage.removeItem('name');
+                localStorage.removeItem('pass');
+            }
+        }
+
+    };
+</script>

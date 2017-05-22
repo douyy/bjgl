@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<style>
+		.left{
+			width:35%;
+			height:100%;
+			/*border-right:1px dotted #ddd;*/
+			float:left;
+		}
+		#insert{
+			width:100px;
+			height:50px;
+			background-color: #DDA0DD;
+			outline:none;
+			border-radius:15px;
+			color:white;
+			border:0px solid #DDA0DD;
+			font-size:20px;
+			margin:20px 0 0 100px;
+		}
+		.border{
+			width:300px;
+			height:200px;
+			border:1px dashed #ccc;
+			margin-top:40px;
+			display:none;
+			margin-left: 20px;
+		}
+		.border p{
+			margin:30px 0 0 30px;
+		}
+		.border #submit{
+			width:50px;
+			height:30px;
+			background-color: skyblue;
+			outline:none;
+			border:0px solid skyblue;
+			border-radius:15px;
+			color:white;
+			margin-left:100px;
+		}
+		.box{
+			width:60%;
+			height:100%;
+			/*margin-left:20px;*/
+			float:right;
+		}
+		 .btn{
+			width:100px;
+			height:100px;
+			background-color: #d8bfd8;
+			color:white;
+			font-size:12px;
+			text-align:center;
+			border-radius:50%;
+			margin-left:10px;
+			float:left;
+		}
+		h3{
+			line-height:70px;
+		}
+		.tab{
+			display:none;
+			background:rgba(255,200,205,0.56);
+			width:500px;
+			height:700px;
+			margin-top:30px;
+			color:#800000;
+			list-style:none;
+			position:fixed;
+			left:50%;
+			border-radius:15px;
+		}
+		.tab li{
+			width:450px;
+			height:70px;
+			text-align:center;
+			font-size:20px;
+			line-height:70px;
+		}
+		.tab .button{
+			width:70px;
+			height:40px;
+			background-color: skyblue;
+			border-radius:15px;
+			color:white;
+			border:0px;
+			outline:none;
+			position:absolute;
+			left:45%;
+			font-size: 18px;
+		}
+		.sp{
+			display:block;
+			position:absolute;
+			top:0;
+			right:-10px;
+			width:30px;
+			height:30px;
+			background-color: #B0E0E6;
+			color:white;
+			border-radius:50%;
+			font-size:20px;
+			cursor:pointer;
+			line-height:30px;
+			text-align:center;
+		} 
+		#wz{
+			display: inline-block;
+			position: absolute;
+			left: 20px;
+			bottom: 10px;
+		}
+		.btnnews{
+			width: 100px;
+			height: 30px;
+			border: #ccc;
+			font-size: 20px;
+			opacity: 0.8;
+			position: absolute;
+			left:70px;
+			top: -20px;
+			border-radius: 5px;
+			outline: none;
+		}
+		.news{
+			width: 250px;
+			height: 300px;
+			z-index: 999;
+			color: black;
+			/*opacity: 0.6;*/
+		}
+		textarea{
+			resize:none;
+		}
+		#submitbtn{
+			width:100px;
+			height: 30px;
+			border-radius: 5px;
+			position:absolute;
+			left:70px;
+			outline:none;
+			border:0px solid #ccc;
+			font-size:15px;
+		}
+		#time{
+			width:230px;
+			height:30px;
+			border-radius:5px;
+			outline: none;
+		}
+		#content{
+			border-radius: 5px;
+			outline: none;
+		}
+	</style>
+</head>
+<body>
+	<div class="left">
+		<button id="insert">添加用户</button><br>
+		<div class="border">
+			<p>用户名：<input type="text" id="username"></p>
+			<p>密&nbsp;&nbsp;码：<input type="text" id="password"></p>
+			<p><input type="button" value="提交" id="submit"></p>
+		</div>
+	</div>
+
+	<div id="wz">
+		<input type="button" class="btnnews" id="btn" value="添加新闻">
+		<div class="news" id="news">
+			<p>时间: <input type="text" id="time" placeholder="非必填项"></p>
+			<p>内容:
+				<textarea id="content" cols="30" rows="10"></textarea>
+			</p>
+			<p>
+				<input type="button" value="提交" id="submitbtn">
+			</p>
+		</div>
+	</div>
+
+	<div class="box"></div>
+	 <script type="text/template" id="template">
+	 	<div class="tip">
+			<div class="btn">
+				<h3>姓名：<%=username%></h3>
+			</div>
+			<ul class="tab">
+				<li>姓名：<%=username%></li>
+				<li>性别：<%=sex%></li>
+				<li>电话：<%=telephone%></li>
+				<li>QQ：<%=qq%></li>
+				<li>微信：<%=weixin%></li>
+				<li>e-mail：<%=email%></li>
+				<li>公司：<%=gongsi%></li>
+				<li>地址：<%=address%></li>
+				<li>座右铭：<%=zuoyouming%></li>
+				<input type="button" class="button" value="删除">
+				<span class="sp">×</span>
+			</ul>	
+		</div>
+	</script>
+	
+	<script src="js/jquery-1.12.3.min.js"></script>
+	<script src="js/underscore.js"></script>
+	<script>
+		var templateString = $('#template').html();
+		var complieFunction = _.template(templateString);
+		var aa ;
+		var array = [];
+		shuxin();
+		function shuxin(){
+			$.get('php/xinxi.php',function(data){
+			// console.log(data);
+			var obj = eval('('+data+')');
+			// console.log(obj);
+			// console.log(obj.result);
+			_.each(obj.result,function(dictionary){
+				// console.log(dictionary);
+				var dataObj = eval('('+dictionary+')');
+				// console.log(dataObj);
+				var DOMStr = complieFunction(dataObj);
+				$('.box').append($(DOMStr));
+				array.push(dataObj.id);
+			});	
+	
+			$('.button').each(function(i){
+					$(this).click(function(){
+						var aa = array[i];
+						var that = $(this);
+						if(confirm("确定要删除吗？")){
+							$.get('php/delete.php',{'id':aa},function(data){
+								console.log(data);
+								if(data == 'ok'){
+									that.parent().parent().remove();
+								}else{
+									alert('删除失败');
+								}
+							});
+						}
+					});
+				});
+				$('.btn').click(function(){
+					$('.tab').hide();
+					$(this).next().toggle();
+				});
+				$('.sp').click(function(){
+					$(this).parent().hide();
+				});
+			});
+		}
+		
+	
+		$('#insert').click(function(){
+			$('.border').toggle();
+	
+		});
+		$('#submit').click(function(){
+			if ($('#username').val() == '' || $('#password').val() == '') {
+				alert('用户名和密码不能为空');
+				return;
+			}
+			$.get('php/insert.php',{
+				'username':$('#username').val(),
+				'password':$('#password').val()
+			},function(data){
+				console.log(data);
+				if(data == 'ok'){
+					alert('添加成功');
+					$('.border').hide();
+					$('.box').html('');
+					shuxin();
+				}else{
+					alert('添加失败');
+				}
+			});
+		});
+		// 添加新闻
+		$('#submitbtn').click(function(){
+			var time = $('#time').val();
+			var content = $('#content').val();
+			if (content == '') {
+				alert('新闻内容不能为空！');
+				return;
+			}
+			// console.log(content);
+			$.post("php/wirte.php",{
+				"time":time,
+				"content":content
+			},function(data){
+				console.log(data);
+				if (data == "ok") {
+					alert("新闻发布成功");
+				}else{
+					alert("新闻发布失败");
+				}
+				$('#content').val('');
+				$('#time').val('');
+				$('#submitbtn').val("提交");
+				$('#submitbtn')[0] .disabled= "";
+			});
+			$('#submitbtn').val("正在提交"); 
+			$('#submitbtn')[0].disabled = "disabled";
+		});
+	</script> 
+</body>
+</html>

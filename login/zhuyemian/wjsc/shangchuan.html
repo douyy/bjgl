@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<style>
+		@font-face{
+		    font-family: myFirstFont;
+		    src:url(../css/youyuan.TTF);
+		}
+		*{
+			padding: 0;
+			margin: 0;
+		}
+		body{
+			width: 100%;
+			height: 100%;
+			font-family: myFirstFont;
+		}
+		header{
+			width: 100%;
+			height: 30px;
+		}
+		section{
+			width: 80%;
+			height: 100%;
+			margin: auto;
+			background-color: pink;
+		}
+		section .tianjia{
+			line-height: 40px;
+			float: left;
+			padding-left: 2%;
+			margin: 30px auto;
+			width: 30%;
+			height: 80%;
+
+		}
+		section .tianjia .guding{
+			position: fixed;
+			top: 60px;
+			left: 100px;
+		}
+		section .table{
+			float: left;
+			width: 60%;
+		}
+		.moxing{
+			line-height: 30px;
+			margin-top: 40px;
+			border-bottom: 1px dashed #ccc;
+		}
+		.pingjia{
+			/*background-color: skyblue;*/
+		}
+		#upload{
+			width: 300px;
+			height: 150px;
+		}
+		#upload.change{
+			border: 3px blue solid;
+		}
+		.mingzi{
+			width: 200px;
+			height: 40px;
+		}
+		.liyan{
+			float:right;
+			margin-right: 5px;
+		}
+		.img img{
+			float: right;
+			margin-right: 120px;
+			width: 100px;
+			height: 90px;
+		}
+		textarea{
+			resize: none;
+		}
+	</style>
+</head>
+<body>
+	<header>
+		
+	</header>
+	<section>
+		<div class="tianjia">
+			<div class="guding">
+				<label for="file">请上传文件</label><br/>
+				<input type="file" name="file" id="file"><br/>
+				<label for="file">发表评论</label><br/>
+				<textarea name="pingjia" id="pingjia" cols="28" rows="6"></textarea><br/>
+				<input type="button" name="button" id="btn" value="提交">
+			</div>	
+		</div>
+		<div class="table" id="table">		
+		</div>
+	</section>	
+	
+	<!-- </form> -->
+	<script src="js/jquery-1.12.3.min.js"></script>
+	<script src="js/underscore.js"></script>
+	<script type="text/template" id="moban">
+		<div class="moxing"> 
+			<span class="liyan"><%= username %></span>
+			<span class="img"><img src="../image/1.png" alt="" class="tp"></span>
+			<span class="mingzi"> 文件名称 :<%= name %></span><br>
+			<span class="leixing"> 文件类型 :<%= type %></span><br>
+			<span class="pingjia"> 评价 :<%= pingjia %></span><br>
+		</div>
+	</script>
+	<script>
+		var username = localStorage.getItem('username');
+		console.log(username);
+		read();
+		var table =$('#table');
+		var templateStr = $('#moban').html();
+			// 获取数据
+		var compile = _.template(templateStr);
+		//console.log(templateStr);
+		$('#btn').click(function(){
+			$('.moxing').remove();
+			write();
+			read();
+			$('#file').val('');
+		 	$('#pingjia').val('');
+		});
+	
+		function write(){
+			var formData = new FormData();
+			formData.append("file",$('#file')[0].files[0]);
+			formData.append("name",name);
+			//console.log($('#file')[0].files[0].name);
+			// console.log($('#file')[0].files[0].type);
+			var name = $('#file')[0].files[0].name;
+			var type = $('#file')[0].files[0].type;
+			var pingjia = $('#pingjia').val();
+			console.log(name);
+			$.post('php/write.php',
+				{
+					'username':username,
+					'name':name,
+					'type':type,
+					'pingjia':pingjia
+				},
+				function(data) {
+					console.log(data);
+				});
+		}
+		function read(){
+ 	 		$.get('php/read.php',function(data){
+ 	 			// console.log(data);
+ 	 			//将box清空
+ 	 			//$('.box').html('');
+ 	 			//将读取到的数据写入
+ 	 			var obj = eval('(' + data + ')');
+ 	 			//console.log(obj);
+ 	 			for (var i = 0; i < obj.jieguo.length; i++) {
+ 	 				var o = eval('(' + obj.jieguo[i] + ')');
+ 	 				//console.log(o);
+ 	 				var DOMstr = compile(o);
+ 	 				table.append(DOMstr);
+ 	 			}	
+ 	 			$('.tp').each(function(i){
+					$(this)[0].src = "../image/"+parseInt(Math.random()*10)+".png";
+				});
+ 	 		});
+
+ 	 	} 
+	</script>
+</body>
+</html>

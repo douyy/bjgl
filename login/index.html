@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <title>登录界面</title>
+    <link rel="stylesheet" type="text/css" href="css/main.css">
+</head>
+<body> 
+	正在加载.........
+	<div class="page1">
+		<div class="contain">
+			<div class="page1-box">
+				<h2 class="title">H5三期班级管理</h2>
+				<div class="page1-box1">
+					<p class="yh">
+						用户类型：<select name="" id="type">
+						<option value="管理员">管理员</option>
+						<option value="普通用户">普通用户</option>
+						</select>
+						</p>
+						<p class="zh">账&nbsp;&nbsp;&nbsp;&nbsp;号：<input type="text" id="username"></p>
+						<p class="pass">密&nbsp;&nbsp;&nbsp;&nbsp;码：<input type="password" id="password"></p>
+						<p class="sbtn"><input type="button" id="btn" value="登&nbsp;&nbsp;&nbsp;&nbsp;录"></p>
+						<p class="f_pass">忘记密码？<a href="tencent://message/?uin=1014555699&Site=&Menu=yes">点击</a>联系管理员</p>
+				</div>
+			</div>
+		</div>
+	</div>
+<script src="js/jquery-1.12.3.min.js"></script>
+<script>
+	$('#btn').click(function(){
+		console.log($('#username').val());
+		console.log($('#password').val());
+		console.log($('#type').val());
+		//验证登录
+		 var that = this;
+		$.get('php/check.php',{'username':$('#username').val(),'password':$('#password').val(),'type':$('#type').val()},function(data){
+			console.log(data);
+			if (data =='wrong') {
+				alert('用户名或密码有误，请核实!');
+			}else{
+				localStorage.setItem('id',data);
+				localStorage.setItem('username',$('#username').val());
+				localStorage.setItem('type',$('#type').val());
+				
+				alert('登录成功');
+				location.href = 'zhuyemian/zhuyemian.html'
+				
+			}
+			$(that).val('登录');
+			that.disabled = false;
+		});
+		$(this).val('正在登录……');
+		$(this)[0].disabled = 'disabled';
+	});
+</script>
+</body>
+</html>

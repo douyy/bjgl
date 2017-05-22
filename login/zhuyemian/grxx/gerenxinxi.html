@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<style>
+		@font-face{
+  			font-family: myFirstFont;
+  			src:url(../css/youyuan.TTF);
+  		}
+  		body{
+  			font-family: myFirstFont;
+  		}
+		.zl{
+			width:700px;
+			height:50px;
+			margin:100px auto 0;
+			position:relative;
+			/*border-bottom:1px solid skyblue;*/
+		}
+		.zl .hx{
+			position:absolute;
+			left:50%;
+			transform:translateX(-50%);
+			width:1px;
+			height:0;
+			border:1px solid skyblue;
+			transition:width 2s;
+			margin-top:20px;
+		}
+		.zl .cc{
+			width:700px;
+		}
+		h2{
+			display:inline;
+			color:#708090;
+		}
+		a{
+			display:inline-block;
+			font-size:15px;
+			text-decoration:none;
+			position:absolute;
+			right:0;
+			bottom:20px;
+			background-color: skyblue;
+			width:50px;
+			height:30px;
+			color:white;
+			border-radius:15px;
+			text-align:center;
+			line-height:30px;
+		}
+		hr{
+			width:700px;
+			color:#ccc;
+		}
+		table{
+			margin:0 auto;
+		}
+		td{
+			width:310px;
+			height:80px;
+			font-size:20px;
+			color: #8b4513;
+		}
+		input,#btn{
+			display:none;
+			border:1px solid skyblue;
+		}
+		#btn{
+			position:absolute;
+			bottom:20px;
+			right:60px;
+			background-color: skyblue;
+			color:white;
+			border-radius:15px;
+			width:50px;
+			height:30px;
+			font-size:15px;
+		}
+		input{
+			width: 200px;
+			height: 30px;
+		}
+	</style>
+</head>
+<body>
+	<div class="zl">
+		<h2>基本资料</h2>
+		<span><a href="#" class="update">修改</a></span>
+		<button id="btn">更新</button>
+		<div class="hx"></div>
+	</div>
+	<table id="tab">
+		
+	</table>
+	
+	<script type="text/template" id="template">
+		<tr>
+			<td>姓名：
+				<span><%=username%></span>
+			</td>
+			<td>性别：
+				<span class="span1"><%=sex%></span>
+				<input type="text" value="<%=sex%>" id="sex">
+			</td>	
+		</tr>
+		<tr>
+			<td>电话：
+				<span class="span1"><%=telephone%></span>
+				<input type="text" value="<%=telephone%>" id="telephone">
+			</td>
+			<td>QQ号：
+				<span class="span1"><%=qq%></span>
+				<input type="text" value="<%=qq%>" id="qq">
+			</td>
+		</tr>
+		<tr>
+			<td>微信：
+				<span class="span1"><%=weixin%></span>
+				<input type="text" value="<%=weixin%>" id="weixin">
+			</td>
+			<td>公司：
+				<span class="span1"><%=gongsi%></span>
+				<input type="text" value="<%=gongsi%>" id="gongsi">
+			</td>
+		</tr>
+		<tr>
+			<td>地址：
+				<span class="span1"><%=address%></span>
+				<input type="text" value="<%=address%>" id="address">
+			</td>
+			<td>邮箱：
+				<span class="span1"><%=email%></span>
+				<input type="text" value="<%=email%>" id="email">
+			</td>
+		</tr>
+		<tr>
+			<td colspan='2'>座右铭：
+				<span class="span1"><%=zuoyouming%></span>
+				<input type="text" value="<%=zuoyouming%>" id="zuoyouming">
+			</td>
+		</tr> 
+	</script>
+	
+	<script src="js/jquery-1.12.3.min.js"></script>
+	<script src="js/underscore.js"></script>
+	<script>
+		$(window).load(function(){
+			$('.hx')[0].classList.add('cc');
+		});
+		var id = localStorage.getItem('id');
+		console.log(id);
+		var username = localStorage.getItem('username');
+		
+		var templateString = $('#template').html();
+		var complieFunction = _.template(templateString);
+		fun();
+
+		$('.update').click(function(){
+			$('.span1').each(function(){
+				$(this)[0].style.display = 'none';
+				$(this).next()[0].style.display = 'block';
+				$('#btn')[0].style.display = 'block';
+			});
+		});	
+
+		$('#btn').click(function(){
+			console.log($('#telephone').val());
+			$.post('php/update.php',{
+				'id':id,
+				'sex':$('#sex').val(),
+				'telephone':$('#telephone').val(),
+				'qq':$('#qq').val(),
+				'weixin':$('#weixin').val(),
+				'gongsi':$('#gongsi').val(),
+				'address':$('#address').val(),
+				'email':$('#email').val(),
+				'zuoyouming':$('#zuoyouming').val()
+			},function(data){
+				console.log(data);
+				if(data == 'ok'){
+					alert('更新成功');
+					$('#tab').html('');
+					fun();		
+				}else{
+					alert("更新失败，请检查信息的完整和正确！");
+				}
+			});
+			$('.span1').each(function(){
+				$(this)[0].style.display = 'block';
+				$(this).next()[0].style.display = 'none';
+				$('#btn')[0].style.display = 'none';
+			});
+			
+		});
+		
+		function fun(){
+			$.get('php/select.php',{'id':id,'username':username},function(data){
+				// console.log(data);
+				var obj = eval('('+data+')');
+				console.log(obj);
+				var dataObj = eval('('+obj.result+')');
+				console.log(dataObj);
+				
+				var DOMStr = complieFunction(dataObj);
+				// console.log(DOMStr);
+				$('#tab').append($(DOMStr));
+
+			});
+		}
+	</script>
+</body>
+</html>

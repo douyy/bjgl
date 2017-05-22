@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"> 
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>主页面</title>
+	<link rel="stylesheet" href="css/rl/calendar.css">
+
+	<!-- 小特效 -->
+	<link rel="stylesheet" href="css/reset.css"> <!-- CSS reset -->
+	<link rel="stylesheet" href="css/style.css"> <!-- Resource style -->
+	<script src="js/modernizr.js"></script> <!-- Modernizr -->
+  <style>
+  		*{
+  			margin: 0px;
+  			padding: 0px;
+  		}
+  		@font-face{
+  			font-family: myFirstFont;
+  			src:url(css/youyuan.TTF);
+  		}
+  		body{
+  			font-family: myFirstFont;
+  			background-color: gray;
+  		}
+ 		header{
+			width: 100%;
+			height: 10%;
+			position: relative;
+		}
+		header .header{
+			width: 100%;
+			height: 100%;
+		}
+		header .header .header-img{
+			float: left;
+			height: 60px;
+			width: 200px;
+			text-align: center;
+			line-height: 74px;
+			margin:20px 0 0 20px;
+		}
+		header .header .header-img img{
+			width: 100px;
+			height: 60px;
+			opacity: 0.8;
+			border-radius: 50% 50% 50% 50%; 
+		}
+		header .header .header-h2{ 
+			position: absolute;
+			top: 20px;
+			right: 17%;
+			line-height: 60px;
+			color: white;
+			font-size: 20px;
+		}
+		.touxiang{
+			width: 50px;
+			height: 50px;
+			border-radius: 50%;
+			vertical-align: middle;
+		}
+		nav{
+			width: 100%;
+			height: 80%; 
+		}
+		nav .nav-left{
+			display: none;
+			float: left;
+			width: 15%;
+			height: 100%;
+			margin-left: 20px;		
+		}
+		nav .nav-left1{
+			width: 15%;
+			display: none;
+		}
+		nav .nav-left .left1{
+			text-align: center;
+			line-height: 60px; 
+			height: 80px;
+			width: 100%
+		}
+		nav .nav-left .left1 a{
+			color: white;
+			font-size: 20px;
+			text-decoration: none;
+		}
+		nav .nav-right{
+			margin-right: 20px;
+			float: right;
+			width: 18%;
+			height: 100%;
+		}
+		nav .nav-right .right1{
+			width:100%;
+			height: 50%;
+			opacity: 0.7;
+			background-color: white;
+			border-radius: 6px 6px 6px 6px;
+			margin-bottom: 8%;
+		}
+		nav .nav-right .right2{
+			width: 100%;
+		}
+
+		/*天气预报*/
+		.toubu{
+			height: 40px;
+			width: 100%;
+			text-align: center;
+			font-size:16px;
+			line-height: 30px;
+			padding-top: 10px;
+		}
+		.toubu #txt{
+			height: 20px;
+			width: 180px;
+			outline: none;
+		}
+		.toubu #btn{
+			border:0;
+			width: 60px;
+			height: 30px;
+			background-color: skyblue;
+			border-radius: 20px;
+			font-size: 15px;
+			color: white;
+			outline: none;
+		}
+		.insert p{
+			text-align: center;
+			height: 30px;
+			color: skyblue;
+		}
+		.insert .chegshi{
+			text-align: center;
+			height: 60px;
+			font-size:20px; 
+			margin-top: 30px;
+		}
+		.insert .tianqi_data .d1,.d2,.d3,.d4,.d5,.d6{
+			width: 100%;
+			height: 30px;
+			color:skyblue;
+			font-size:16px; 
+		}
+		.tianqi_day{
+			text-align: center;
+			width: 100%;
+			height: 100px;
+		}
+
+		footer .footer{
+			font-size: 15px;
+			line-height: 120px;
+			text-align: center;
+			color: white;
+		}
+		.xiaotubiao{
+			position: fixed;
+			bottom: 20px;
+			left: 50px;
+		}
+  </style>
+  	<!-- 背景 -->
+	<link rel="stylesheet" type="text/css" href="css/index.css">
+	<script>window.jQuery || document.write('<script src="js/jquery-1.11.0.min.js"><\/script>')</script>
+	<script type="text/javascript" src="js/quietflow.min.js"></script>
+	<script type="text/javascript" src="js/index.js"></script>
+	<script type="text/javascript" src="js/prism.js"></script>
+	<!-- 天气 -->
+	<script src="js/tq/underscore.js"></script>
+	<script>
+		function ifrm(canshu){
+			document.getElementById('iframe').src = canshu;
+		}
+	</script>
+</head>
+<body>
+	<header>
+		<div class="header">
+			<div class="header-img">
+				<img src="image/h5.jpg" alt="">
+			</div>
+			<div class="header-h2">
+				<img src="" alt="" class="touxiang">
+				<p style="display: inline-block;">
+					<span class="username"></span> 欢迎您！
+					<a href="../index.html" style="color: #DDA0DD;">退出</a>
+				</p>
+			</div>
+		</div>
+	</header>
+	<nav>
+		<div class="nav-left">
+			<div class="left1"> </div>
+			<div class="left1">
+				<a href="#" id="grxx/gerenxinxi.html" onclick="ifrm(this.id)">个人信息</a>
+			</div>
+			<div class="left1">
+				<a href="#" id="txl/txl.html" onclick="ifrm(this.id)" >通 讯 录</a>
+			</div>		
+			<div class="left1">
+				<a href="#" id="liuyan/liuyan.html" onclick="ifrm(this.id)" >小 秘 密</a>
+			</div>	
+			<div class="left1">
+				<a href="#" id="lts/room.html" onclick="ifrm(this.id)" >聊 天 室</a>
+			</div>	
+			<div class="left1">
+				<a href="#" id="wjsc/shangchuan.html" onclick="ifrm(this.id)" >上传文件</a>
+			</div>
+			<div class="left1">
+				<a href="#" id="yule/yule.html" onclick="ifrm(this.id)" >小 游 戏</a>
+			</div>		
+		</div>
+		<div class="nav-left nav-left1"></div>
+		<!-- 小特效 -->
+		<div class="xiaotubiao">
+			<svg id="cd-animated-svg" version="1.1" x="0px" y="0px" width="200px" height="200px" viewBox="0 0 200 200" style="enable-background:new 0 0 200 200;" xml:space="preserve">
+				<title>Buildings</title>
+				<desc>3 minimal buildings with floating clouds</desc>
+				<g id="cd-loading">
+					<g id="cd-circle">
+						<circle id="cd-loading-circle" class="cd-stroke cd-stroke-color-2" cx="100" cy="100" r="77.5"/>
+						<circle id="cd-loading-circle-filled" class="cd-stroke cd-stroke-color-3" cx="100" cy="100" r="77.5" transform="rotate(-90 100 100)"/>
+					</g>
+					<g id="cd-play-btn">
+						<rect class="cd-pointer" x="84" y="78" width="33" height="44"/>
+						<polygon class="cd-fill-color-1" points="84,78 116,100 84,122 	"/>
+					</g>
+					<g id="cd-pause-btn" transform="translate(100 100) scale(0)">
+						<rect class="cd-pointer" x="81" y="80" width="38" height="40"/>
+						<rect class="cd-fill-color-1" x="81" y="80" width="11" height="40"/>
+						<rect class="cd-fill-color-1" x="108" y="80" width="11" height="40"/>
+					</g>
+				</g>
+				<g id="cd-buildings">
+					<g id="cd-cloud-1" transform="translate(-80 0)">
+						<line class="cd-stroke cd-stroke-color-2" x1="5" y1="13" x2="29" y2="13"/>
+						<line class="cd-stroke cd-stroke-color-2" x1="35" y1="13" x2="44" y2="13"/>
+						<line class="cd-stroke cd-stroke-color-2" x1="72" y1="27" x2="14" y2="27"/>
+					</g>
+					<g id="cd-cloud-2" transform="translate(70 0)">
+						<line class="cd-stroke cd-stroke-color-2" x1="191" y1="68" x2="159" y2="68"/>
+						<line class="cd-stroke cd-stroke-color-2" x1="153" y1="68" x2="144" y2="68"/>
+						<line class="cd-stroke cd-stroke-color-2" x1="179" y1="83" x2="133" y2="83"/>
+					</g>
+					<g id="cd-home-3">
+						<polygon id="cd-home-3-roof" class="cd-stroke cd-stroke-color-1" points="59.4,55 95,15 130.6,55" transform="translate(0 20)"/>
+						<rect id="cd-home-3-base" class="cd-stroke cd-stroke-color-1" x="66" y="54" width="58" height="0" transform="rotate(180 95 116)" data-height="124"/>
+						<circle id="cd-home-3-window" class="cd-stroke cd-stroke-color-1" cx="95" cy="77" r="11" transform="translate(95 77) scale(0)"/>
+					</g>
+					<g id="cd-home-2">
+						<rect id="cd-home-2-base" class="cd-stroke cd-stroke-color-1" x="98" y="132" width="70" height="0" transform="rotate(180 133 155)" data-height="46"/>
+						<rect id="cd-home-2-roof" class="cd-stroke cd-stroke-color-1" x="98" y="122" width="0" height="10" data-width="70"/>
+						<rect id="cd-home-2-door" class="cd-stroke cd-stroke-color-1" x="141" y="156" width="16" height="0" transform="rotate(180 149 167)" data-height="22"/>
+						<rect id="cd-home-2-window" class="cd-stroke cd-stroke-color-1" x="106" y="143" width="26" height="10" transform="translate(119 148) scale(0)"/>
+					</g>
+					<g id="cd-home-1">
+						<rect id="cd-home-1-chimney" class="cd-stroke cd-stroke-color-1" x="34" y="89" width="11" height="11" transform="translate(0 70)"/>
+						<rect id="cd-home-1-base" class="cd-stroke cd-stroke-color-1" x="29" y="108" width="70" height="0" transform="rotate(180 64 143)" data-height="70"/>
+						<rect id="cd-home-1-roof" class="cd-stroke cd-stroke-color-1" x="23" y="100" width="0" height="9" data-width="81"/>
+						<rect id="cd-home-1-door" class="cd-stroke cd-stroke-color-1" x="53" y="150" width="20" height="0" transform="rotate(180 63 164)" data-height="28"/>
+						<rect id="cd-home-1-window" class="cd-stroke cd-stroke-color-1" x="53" y="121" width="20" height="18" transform="translate(63 130) scale(0)"/>
+					</g>
+					<line id="cd-floor" class="cd-stroke cd-stroke-color-1" x1="2" y1="178" x2="2" y2="178" data-x="198"/>
+				</g>
+			</svg>
+		</div> 
+		<script src="js/snap.svg-min.js"></script>
+		<script src="js/main.js"></script> 
+		<!-- 中间框架 -->
+		<iframe id="iframe" src=""  width="62%" height="100%" frameborder="0" style="background-color: white; opacity: 0.96;font-family:myFirstFont;"></iframe>
+		<!-- 右侧边 -->
+		<div class="nav-right">
+			<div class="right1">
+				<div class="toubu">
+					输入城市查看今天天气预报
+					<input type="text" id="txt" value="洛阳">
+					<input type="button" id="btn" value="查询">
+				</div>
+				<div class="insert" id="zong" >
+					<div  class="tab" id="insert"></div>
+					<div class="insert2" id="insert2"></div>
+				</div>
+				<script type="text/template" id='tanqi-tab'>
+						<div class="chegshi">
+							<p>城市：<%=city%></p><p>温度为: <%=wendu%> C</p>
+						</div>
+				</script>
+				<script type="text/template" id='tanqi-nerong'>
+					<div class="tianqi_day">
+						<div class="tianqi_data">
+								<div class="d1"><%= date %></div>
+								<div class="d2"><%= fengli %></div>
+								<div class="d3"><%= fengxiang %></div>
+								<div class="d4"><%= high %></div>
+								<div class="d5"><%= low %></div>
+								<div class="d6"><%= type %></div>
+						</div>
+					</div>
+				</script>
+				<script>
+					var user = localStorage.getItem('username');
+					$('.username').html(user);
+
+					var type = localStorage.getItem('type');
+					if (type == '管理员') {
+						$('.nav-left')[0].style.display = 'none';
+						$('.nav-left1')[0].style.display = 'block';
+						$('#iframe')[0].src = "gly/guanliyuan.html";
+						$('.touxiang')[0].style.display = 'none';
+						
+					}else{
+						$('.nav-left')[0].style.display = 'block';
+						$('.nav-left1')[0].style.display = 'none';
+						$('#iframe')[0].src = "shouye/shouye.html";
+						$('.touxiang')[0].src = 'image/'+parseInt(Math.random()*10)+'.png';		
+					}
+					cictnam = '洛阳';
+					tqyb();
+
+					$('#btn').click(function(){
+						$('#insert').html('');
+						$('#insert2').html('');
+						cictnam = $('#txt').val();
+						tqyb(cictnam);
+					});
+					function tqyb() {
+							$.ajax({
+								"dataType":"json",
+								"url":'http://wthrcdn.etouch.cn/weather_mini?city='+ cictnam,
+								"jsonpCallback":'',
+								"success":function(data){
+									//console.log(data.data);
+									var com = _.template($('#tanqi-tab').html());
+									$('#insert').append(com(data.data));
+									//第个模块
+									//console.log(data.data.forecast);
+									var comm =_.template($('#tanqi-nerong').html())
+									for (var j = 0; j < data.data.forecast.length; j++) {
+										var shuzu =data.data.forecast[0];
+									}$('#insert2').append(comm(shuzu));
+								}
+							});
+						}
+				</script>
+			</div>
+			<div class="right2">
+				<div id="calendar" class="calendar"></div>
+				<script src="js/rl/calendar.js"></script>
+			</div>
+			</div>
+		</div>
+	</nav>
+	<footer>
+		<div class="footer">
+			@ 我们自己| 我们自己 | 我们自己 | 我们自己 |
+		</div>
+	</footer>
+
+</body>
+</html>

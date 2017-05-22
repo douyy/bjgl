@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<link rel="stylesheet" href="css/bootstrap.min.css">
+	<link rel="stylesheet" href="css/reset.css">
+	<style>
+		@font-face{
+		    font-family: myFirstFont;
+		    src:url(../css/youyuan.TTF);
+		}
+		body{
+			background:url(images/timg.jpg);
+			font-family: myFirstFont;
+		}
+		.box{
+			width: 700px;
+			height:400px;
+			border: 1px solid #ccc;
+			background-color: #ccc;
+			overflow-y: scroll;
+			position: absolute;
+			top:100px;
+			left:50px;
+
+		}
+		.talk:nth-child(2n){
+			background-color: #FAEBD7;
+			color: black;
+		}
+		.talk{
+			color:white;
+			font-size: 17px;
+		}
+		.top{
+			width:600px;
+			height:50px;
+			border: 1px solid #ccc;
+			font-size:30px;
+			background:url(images/5.jpg);
+			color:white;
+			padding-left:100px;
+			position: absolute;
+			top:50px;
+			left:50px;
+
+		}
+		.b_box{
+			width:800px;
+			height:750px;
+			border: 1px solid black;
+			position: relative;
+			background:url(images/timg.jpg) no-repeat;
+			margin:0 auto;
+			border-radius: 15px;
+			box-shadow:4px 4px 4px 4px gray; 
+
+		}
+		#saytext{
+		 	width:700px;
+			height:50px;
+			border: 1px solid #ccc;
+			position: absolute;
+			top:462px;
+			left:-10px;
+		}
+		.logo{
+			width:60px;
+			height: 60px;
+			position: absolute;
+			left:30px;
+		}
+		.comment{
+			width:680px; 
+			margin:20px auto; 
+			position:relative
+		} 
+		.comment h3{
+			height:28px; 
+			line-height:28px
+		} 
+		.com_form{
+			width:100%; 
+			position:relative
+		} 
+		.input{
+			width:99%; 
+			height:60px; 
+			border:1px solid #ccc
+		} 
+		.com_form p{
+			height:28px; 
+			line-height:28px; 
+			position:relative
+		} 
+		span.emotion{
+			position: absolute;
+			top:512px;
+			left:-15px;
+			padding-left:20px; 
+			cursor:pointer;
+			font-size: 20px;
+			line-height: 40px;
+		} 
+		span.emotion:hover{
+			background-position:2px -28px
+		} 
+		.qqFace{
+			margin-top:4px;
+			background:#fff;
+			padding:2px;border:1px #dfe6f6 solid;
+		} 
+		.qqFace table td{
+			padding:0px;
+		} 
+		.qqFace table td img{
+			cursor:pointer;border:1px #fff solid;
+		} 
+		.qqFace table td img:hover{
+			border:1px #0066cc solid;
+		}
+		input.sub_btn{
+			width:100px;
+			height:40px;
+			position: absolute;
+			top:515px;
+			left:600px;
+			color:white;
+			border:0;
+			background-color: skyblue;
+			font-size: 20px;
+			border-radius:20px;
+			margin-top: 10px;
+		}
+		.span1{
+			font-size: 20px;
+			line-height: 25px;
+			color: #DDA0DD;	
+			font-weight: bold;
+			display: inline-block;
+			width: 80px;
+		}
+	</style>
+</head>
+<body>
+	 <div class="b_box">
+	 <div class="top">
+	 <div class="logo"> 
+	 	<img src="images/4.png" alt="">
+	 </div>
+	 	班级聊天室
+	 </div>
+	<div class="box" id="box">
+		<div>
+			正在读取...
+		</div>
+	</div>
+	<div class="talk" id="talk">
+		<p><span class="span1"></span>你好，请发言：</p>
+		<div id="show"></div> 
+		<div class="comment"> 
+ 			<div class="com_form"> 
+  				<textarea class="input" id="saytext" name="saytext"></textarea> 
+  				<p>
+  					<span class="emotion">表情</span>
+  					<input type="button" class="sub_btn" value="提交">
+  				</p> 
+ 			</div> 
+		</div>
+	</div>
+	</div>
+	<script src="js/jquery-1.12.3.min.js"></script>
+	<script type="text/javascript" src="js/jquery.min.js"></script>
+	<script type="text/javascript" src="js/jquery.qqFace.js"></script>
+	<script>
+		var username = localStorage.getItem('username');
+		$('.span1').html(username);
+		var flag = true;					// 控制进度条是否置底
+		setInterval(function () {
+			$.get('php/read.php',function (data) {
+				// console.log(data);
+				$('.box').html('');			// 清空box
+				// 写入读取到的数据
+				data = JSON.parse(data);
+				$.each(data.result,function (i) {
+					var item = JSON.parse(data.result[i]);
+					$('.box').append($('<div class="talk"><b>' + item.username + '</b>说：' + item.content + '</div>'));
+				});
+				// 进度条置底
+				flag && $('#box').scrollTop( $('#box')[0].scrollHeight);
+			});
+		},200);
+
+		// 点击发送信息，进度条置底
+		$('.sub_btn').click(function(event){
+			$.post('php/write.php',{'username':username,'content':$('#saytext').val()});
+				$('#saytext').val('');
+				var str = $("#saytext").val();
+				// $("#box").html(replace_em(str));
+				flag = 	true;
+		});
+
+		// 滚动条滚动取消进度条置底
+		$('#box').scroll(function(){
+			flag = false;
+		});
+
+		function replace_em(str){
+			str = str.replace(/\</g,'&lt;');
+			str = str.replace(/\>/g,'&gt;');
+			str = str.replace(/\n/g,'<br/>');
+			str = str.replace(/\[em_([0-9]*)\]/g,'<img src="arclist/$1.gif" border="0" />');
+			return str;
+		}
+		$(function(){
+			$('.emotion').qqFace({
+				id : 'facebox', 
+				assign:'saytext', 
+				path:'arclist/'	//表情存放的路径
+			});
+		});
+					
+	</script>
+</body>
+</html>
